@@ -385,3 +385,54 @@ fun! ShowFuncName()
 endfun
 map ,f :call ShowFuncName() <CR>
 
+inoremap  :call PhpDocSingle()
+nnoremap  :call PhpDocSingle()
+vnoremap  :call PhpDocRange()
+
+au FileType php call AddPHPFuncList()
+function AddPHPFuncList()
+  set dictionary-=~/.vim/dict/funclist.txt dictionary+=~/.vim/dict/funclist.txt
+  set complete-=k complete+=k
+endfunction
+
+"css list
+  au FileType css call AddCssList()
+ function AddCssList()
+     set dictionary-=~/.vim/dict/csslist.txt dictionary+=~/.vim/dict/csslist.txt
+     set complete-=k complete+=k
+ endfunction
+ 
+ au FileType js call AddJsList()
+ function AddJsList()
+     set dictionary-=~/.vim/dict/jslist.txt dictionary+=~/.vim/dict/jslist.txt
+     set complete-=k complete+=k
+ endfunction
+ "自动的增加括号
+
+inoremap ( ()<ESC>i
+inoremap ) <c-r>=ClosePair(')')<CR>
+inoremap { {}<ESC>i
+inoremap } <c-r>=ClosePair('}')<CR>
+inoremap [ []<ESC>i
+inoremap ] <c-r>=ClosePair(']')<CR>
+inoremap < <><ESC>i
+inoremap > <c-r>=ClosePair('>')<CR>
+
+function ClosePair(char)
+if getline('.')[col('.') - 1] == a:char
+	return "\<Right>"
+else
+	return a:char
+endif
+endf
+
+"auto 括号结束
+
+"记住上次的位置 
+autocmd BufReadPost *
+	\ if line("'\"") > 1 && line("'\"") <= line("$") |
+	\   exe "normal! g`\"" |
+	\ endif
+" 记住上次的位置  结束
+
+
